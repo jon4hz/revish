@@ -1,0 +1,27 @@
+run:
+  tests: false
+  concurrency: 8
+  timeout: 2m
+  skip-dirs:
+    - scripts
+    - .ssh
+    - .vscode
+    - assets
+    - .github
+    - bin
+
+linters:
+  enable:
+    - bodyclose
+    - exportloopref
+    - goimports
+    - gosec
+    - nilerr
+    - predeclared
+    - revive
+    - rowserrcheck
+    - sqlclosecheck
+    - tparallel
+    - unconvert
+    - unparam
+    - whitespace
