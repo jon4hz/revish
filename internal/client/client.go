@@ -13,8 +13,8 @@ import (
 	"github.com/charmbracelet/wish"
 	lm "github.com/charmbracelet/wish/logging"
 	"github.com/gliderlabs/ssh"
-	"github.com/jon4hz/revish/interal/middleware/shell"
-	"github.com/jon4hz/revish/interal/server"
+	"github.com/jon4hz/revish/internal/middleware/shell"
+	"github.com/jon4hz/revish/internal/server"
 	gossh "golang.org/x/crypto/ssh"
 	"golang.org/x/term"
 )

@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/jon4hz/revish/interal/version"
+	"github.com/jon4hz/revish/internal/version"
 	"github.com/muesli/coral"
 )
 

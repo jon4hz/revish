@@ -8,7 +8,7 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jon4hz/revish/interal/server"
+	"github.com/jon4hz/revish/internal/server"
 	"github.com/muesli/coral"
 )
 
