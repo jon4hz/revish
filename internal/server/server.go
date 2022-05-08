@@ -9,7 +9,9 @@ import (
 	"github.com/charmbracelet/wish"
 	lm "github.com/charmbracelet/wish/logging"
 	"github.com/gliderlabs/ssh"
+	"github.com/jon4hz/revish/internal/revishlist"
 	gossh "golang.org/x/crypto/ssh"
+	"golang.org/x/sync/errgroup"
 )
 
 // #nosec G101
@@ -27,6 +29,7 @@ type Config struct {
 
 type Server struct {
 	ssh *ssh.Server
+	dir *revishlist.Server
 	cfg *Config
 }
 
@@ -35,6 +38,9 @@ func passwordHandler(ctx ssh.Context, password string) bool {
 }
 
 func New(cfg *Config) (*Server, error) {
+	s := &Server{
+		cfg: cfg,
+	}
 	srv, err := wish.NewServer(
 		wish.WithAddress(net.JoinHostPort(cfg.Listen, strconv.Itoa(cfg.Port))),
 		wish.WithHostKeyPath(".ssh/revish_ed25519"),
@@ -56,16 +62,13 @@ func New(cfg *Config) (*Server, error) {
 	srv.ChannelHandlers = map[string]ssh.ChannelHandler{
 		"direct-tcpip":                 ssh.DirectTCPIPHandler,
 		"session":                      ssh.DefaultSessionHandler,
-		ChannelRegisterRemoteSession:   registerRemoteSession(),
-		ChannelUnregisterRemoteSession: unregisterRemoteSession(),
+		ChannelRegisterRemoteSession:   s.registerRemoteSession(),
+		ChannelUnregisterRemoteSession: s.unregisterRemoteSession(),
 		//ChannelTryRemotePort:           func(srv *ssh.Server, conn *gossh.ServerConn, newChan gossh.NewChannel, ctx ssh.Context) {}, // TODO: implement
 	}
 	srv.SessionRequestCallback = newSessionRequestCallback(cfg.NoShell)
-
-	s := &Server{
-		ssh: srv,
-		cfg: cfg,
-	}
+	s.ssh = srv
+	s.dir = revishlist.New()
 
 	return s, nil
 }
@@ -79,7 +82,15 @@ const (
 )
 
 func (s *Server) Serve() error {
-	return s.ssh.ListenAndServe()
+	var eg errgroup.Group
+	eg.Go(func() error {
+		log.Printf("Starting wishlist directoy on %s:%d", s.cfg.Listen, s.cfg.Port)
+		return s.dir.ListenAndServe()
+	})
+	eg.Go(func() error {
+		return s.ssh.ListenAndServe()
+	})
+	return eg.Wait()
 }
 
 func (s *Server) Close(ctx context.Context) error {
@@ -109,7 +120,7 @@ type ExtraInfo struct {
 	ListeningAddress string
 }
 
-func registerRemoteSession() ssh.ChannelHandler {
+func (s *Server) registerRemoteSession() ssh.ChannelHandler {
 	return func(srv *ssh.Server, conn *gossh.ServerConn, newChan gossh.NewChannel, ctx ssh.Context) {
 		var extraInfo ExtraInfo
 		err := gossh.Unmarshal(newChan.ExtraData(), &extraInfo)
@@ -125,10 +136,19 @@ func registerRemoteSession() ssh.ChannelHandler {
 			extraInfo.Hostname,
 			extraInfo.ListeningAddress,
 		)
+		s.dir.AddEndpoint(
+			&revishlist.Endpoint{
+				SessionID:        conn.SessionID(),
+				RemoteAddr:       conn.RemoteAddr().String(),
+				User:             extraInfo.CurrentUser,
+				Hostname:         extraInfo.Hostname,
+				ListeningAddress: extraInfo.ListeningAddress,
+			},
+		)
 	}
 }
 
-func unregisterRemoteSession() ssh.ChannelHandler {
+func (s *Server) unregisterRemoteSession() ssh.ChannelHandler {
 	return func(srv *ssh.Server, conn *gossh.ServerConn, newChan gossh.NewChannel, ctx ssh.Context) {
 		var extraInfo ExtraInfo
 		err := gossh.Unmarshal(newChan.ExtraData(), &extraInfo)
@@ -143,6 +163,15 @@ func unregisterRemoteSession() ssh.ChannelHandler {
 			extraInfo.CurrentUser,
 			extraInfo.Hostname,
 			extraInfo.ListeningAddress,
+		)
+		s.dir.RemoveEndpoint(
+			&revishlist.Endpoint{
+				SessionID:        conn.SessionID(),
+				RemoteAddr:       conn.RemoteAddr().String(),
+				User:             extraInfo.CurrentUser,
+				Hostname:         extraInfo.Hostname,
+				ListeningAddress: extraInfo.ListeningAddress,
+			},
 		)
 	}
 }

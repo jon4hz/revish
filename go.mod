@@ -9,6 +9,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.3
 	github.com/muesli/coral v1.0.0
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
+	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
 	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
 )
 
@@ -35,5 +36,8 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/sahilm/fuzzy v0.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/teivah/broadcast v0.0.7-0.20220316095729-071f20229a32 // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 )
+
+replace github.com/charmbracelet/wishlist => ../wishlist
