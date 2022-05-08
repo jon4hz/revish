@@ -172,7 +172,6 @@ func (c *Client) createRemoteSession() error {
 
 func (c *Client) stopRemoteSession() error {
 	extraInfo := getExtraInfo(c.address)
-
 	newChan, newReq, err := c.gossh.OpenChannel(server.ChannelUnregisterRemoteSession, gossh.Marshal(&extraInfo))
 	if err != nil && !strings.Contains(err.Error(), "unregistered_remote_session") {
 		log.Printf("error: could not create info channel: %+v", err)
