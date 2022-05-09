@@ -88,8 +88,8 @@ func (s *Server) RemoveEndpoint(e *Endpoint) {
 
 func (s *Server) broadcastNewEndpoints() {
 	e := s.WishlistEndpoints()
-	s.cfg.EndpointChan <- e
 	s.cfg.Endpoints = e
+	s.cfg.EndpointChan <- e
 }
 
 func (s *Server) WishlistEndpoints() []*wishlist.Endpoint {
