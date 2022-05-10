@@ -4,9 +4,9 @@ go 1.18
 
 require (
 	github.com/charmbracelet/wish v0.3.1
-	github.com/charmbracelet/wishlist v0.4.0
+	github.com/charmbracelet/wishlist v0.4.1-0.20220510181402-7205ff92f8b7
 	github.com/creack/pty v1.1.18
-	github.com/gliderlabs/ssh v0.3.3
+	github.com/gliderlabs/ssh v0.3.4
 	github.com/muesli/coral v1.0.0
 	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
@@ -39,5 +39,3 @@ require (
 	github.com/teivah/broadcast v0.1.0 // indirect
 	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
 )
-
-replace github.com/charmbracelet/wishlist => ../wishlist
