@@ -12,6 +12,7 @@ import (
 
 	"github.com/charmbracelet/wish"
 	lm "github.com/charmbracelet/wish/logging"
+	"github.com/charmbracelet/wish/scp"
 	"github.com/gliderlabs/ssh"
 	"github.com/jon4hz/revish/internal/middleware/shell"
 	"github.com/jon4hz/revish/internal/server"
@@ -37,12 +38,20 @@ type Client struct {
 }
 
 func New(cfg *Config) (*Client, error) {
+	// get current dir
+	cwd, err := os.Getwd()
+	if err != nil {
+		return nil, err
+	}
+	log.Println(cwd)
+	handler := scp.NewFileSystemHandler(cwd)
 	srv, err := wish.NewServer(
 		wish.WithHostKeyPath(".ssh/revish_client_ed25519"),
 		wish.WithAuthorizedKeys(".authorized_keys"),
 		wish.WithMiddleware(
 			lm.Middleware(),
 			shell.Middleware(cfg.Shell),
+			scp.Middleware(handler, handler),
 		),
 	)
 	if err != nil {
