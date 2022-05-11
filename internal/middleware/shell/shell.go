@@ -1,6 +1,7 @@
 package shell
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -37,8 +38,10 @@ func Middleware(shell string) wish.Middleware {
 				io.Copy(s, f) // stdout
 				cmd.Wait()
 			} else {
-				io.WriteString(s, "No PTY requested.\n")
-				s.Exit(1)
+				err := errors.New("no pty requested")
+				io.WriteString(s, err.Error()+"\n")
+				wish.Fatal(s, err)
+				return
 			}
 		}
 	}
