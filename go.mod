@@ -3,7 +3,7 @@ module github.com/jon4hz/revish
 go 1.18
 
 require (
-	github.com/charmbracelet/wish v0.4.0
+	github.com/charmbracelet/wish v0.5.0
 	github.com/charmbracelet/wishlist v0.4.1-0.20220510181402-7205ff92f8b7
 	github.com/creack/pty v1.1.18
 	github.com/gliderlabs/ssh v0.3.4
