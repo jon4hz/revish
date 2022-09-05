@@ -6,11 +6,11 @@ require (
 	github.com/charmbracelet/wish v0.5.0
 	github.com/charmbracelet/wishlist v0.4.1-0.20220510181402-7205ff92f8b7
 	github.com/creack/pty v1.1.18
-	github.com/gliderlabs/ssh v0.3.4
+	github.com/gliderlabs/ssh v0.3.5
 	github.com/muesli/coral v1.0.0
-	golang.org/x/crypto v0.0.0-20220307211146-efcb8507fb70
+	golang.org/x/crypto v0.0.0-20220826181053-bd7e27e6170d
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211
+	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035
 )
 
 require (
@@ -37,5 +37,5 @@ require (
 	github.com/sahilm/fuzzy v0.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/teivah/broadcast v0.1.0 // indirect
-	golang.org/x/sys v0.0.0-20220209214540-3681064d5158 // indirect
+	golang.org/x/sys v0.0.0-20220825204002-c680a09ffe64 // indirect
 )
