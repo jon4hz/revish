@@ -10,7 +10,7 @@ require (
 	github.com/muesli/coral v1.0.0
 	golang.org/x/crypto v0.0.0-20220826181053-bd7e27e6170d
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c
-	golang.org/x/term v0.0.0-20220722155259-a9ba230a4035
+	golang.org/x/term v0.5.0
 )
 
 require (
@@ -38,6 +38,6 @@ require (
 	github.com/sahilm/fuzzy v0.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/teivah/broadcast v0.1.0 // indirect
-	golang.org/x/sys v0.0.0-20220825204002-c680a09ffe64 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 )
