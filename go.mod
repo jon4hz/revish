@@ -9,7 +9,7 @@ require (
 	github.com/gliderlabs/ssh v0.3.5
 	github.com/muesli/coral v1.0.0
 	golang.org/x/crypto v0.7.0
-	golang.org/x/sync v0.1.0
+	golang.org/x/sync v0.3.0
 	golang.org/x/term v0.6.0
 )
 
